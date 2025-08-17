@@ -23,4 +23,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: dokploy-runner:latest
+          tags: dokploy-runner:latest,dokploy-runner:${{ github.sha }}
