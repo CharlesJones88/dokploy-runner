@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  REPO: charlesjones88
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,4 +31,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: dokploy-runner:latest,dokploy-runner:${{ github.sha }}
+          tags: ${{env.REPO }}/dokploy-runner:latest,${{ env.REPO }}/dokploy-runner:${{ github.sha }}
