@@ -6,7 +6,8 @@ on:
       - main
 
 env:
-  REPO: charlesjones88
+  REGISTRY: ghcr.io
+  REPO: charlesjones88/dokploy-runner
 
 jobs:
   deploy:
@@ -31,4 +32,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{env.REPO }}/dokploy-runner:latest,${{ env.REPO }}/dokploy-runner:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.REPO }}:latest,${{ env.REGISTRY }}/${{ env.REPO }}:${{ github.sha }}
