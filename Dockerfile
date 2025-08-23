@@ -11,19 +11,12 @@ RUN apt install -y --no-install-recommends \
   libicu74 libicu-dev libssl3  libkrb5-3
 
 RUN ARCH="" \
-case "$(uname -m)" in \
-  "x86_64") \
-    ARCH="x64" \
-    ;; \
-  "aarch64") \
-    ARCH="arm64" \
-    ;; \
-  *) \
-    echo "Unsupport OS Architecture" \
-    exit 1 \
-    ;; \
-esac \
-cd /home/docker && mkdir actions-runner && cd actions-runner \
+ && case "$(uname -m)" in \
+    x86_64) ARCH="x64" ;; \
+    aarch64) ARCH="arm64" ;; \
+    *) echo "Unsupport OS Architecture" ; exit 1 ;; \
+  esac \
+  && cd /home/docker && mkdir actions-runner && cd actions-runner \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 
