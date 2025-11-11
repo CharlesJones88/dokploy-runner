@@ -24,7 +24,7 @@ cd /home/docker/actions-runner
 
 ./config.sh --url https://github.com/${REPO} \
   --token ${REG_TOKEN} \
-  --labels dokploy,${ARCH}
+  --labels dokploy,${ARCH},dokploy-${ARCH}
 
 cleanup() {
   echo "Removing runner ..."
