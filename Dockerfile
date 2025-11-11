@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-ARG RUNNER_VERSION="2.328.0"
+ARG RUNNER_VERSION="2.329.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
