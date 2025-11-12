@@ -2,8 +2,12 @@
 
 REPO=$REPO
 ACCESS_TOKEN=$TOKEN
-
+ADDITIONAL_ARGS=""
 ARCH=""
+
+if [[ "$EPHEMERAL" = "true" ]]; then
+  ADDITIONAL_ARGS=$(echo "${ADDITIONAL_ARGS} --ephemeral" | xargs)
+fi
 
 case "$(uname -m)" in
   "x86_64")
@@ -13,7 +17,7 @@ case "$(uname -m)" in
     ARCH="arm64"
     ;;
   *)
-    echo "Unsupport OS Architecture"
+    echo "Unsupported OS Architecture"
     exit 1
     ;;
 esac
@@ -23,7 +27,7 @@ REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" -H "Accept: a
 cd /home/docker/actions-runner
 
 ./config.sh --url https://github.com/${REPO} \
-  --token ${REG_TOKEN} \
+  --token ${REG_TOKEN} ${ADDITIONAL_ARGS} \
   --labels dokploy,${ARCH},dokploy-${ARCH}
 
 cleanup() {

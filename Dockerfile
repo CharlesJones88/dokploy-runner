@@ -1,8 +1,10 @@
 FROM ubuntu:latest
 
 ARG RUNNER_VERSION="2.329.0"
+ARG EPHEMERAL=false
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV EPHEMERAL=${EPHEMERAL}
 
 RUN apt update -y && apt upgrade -y && useradd -m docker
 RUN apt install -y --no-install-recommends \
