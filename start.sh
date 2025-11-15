@@ -3,10 +3,12 @@
 REPO=$REPO
 ACCESS_TOKEN=$TOKEN
 ADDITIONAL_ARGS=""
+ADDITIONAL_LABELS=""
 ARCH=""
 
 if [[ "$EPHEMERAL" = "true" ]]; then
   ADDITIONAL_ARGS=$(echo "${ADDITIONAL_ARGS} --ephemeral" | xargs)
+  ADDITIONAL_LABELS="$ADDITIONAL_LABELS,ephemeral"
 fi
 
 case "$(uname -m)" in
@@ -28,7 +30,7 @@ cd /home/docker/actions-runner
 
 ./config.sh --url https://github.com/${REPO} \
   --token ${REG_TOKEN} ${ADDITIONAL_ARGS} \
-  --labels dokploy,${ARCH},dokploy-${ARCH}
+  --labels dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}
 
 cleanup() {
   echo "Removing runner ..."
