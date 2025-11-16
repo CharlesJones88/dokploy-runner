@@ -12,7 +12,8 @@ RUN apt update -y \
   && useradd -m -g docker docker \
   && chown -R docker ~docker \
   && apt install -y --no-install-recommends \
-  ca-certificates curl docker.io jq \
+  build-essential curl docker.io jq \
+  libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
   python3 python3-dev python3-pip python3-venv \
   && rm -rf /var/lib/apt/lists/*
 
