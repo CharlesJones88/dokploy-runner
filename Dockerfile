@@ -9,7 +9,7 @@ ENV EPHEMERAL=${EPHEMERAL}
 RUN apt update -y \
   && apt upgrade -y \
   && groupadd -g 988 docker \
-  && useradd -m -G docker docker \
+  && useradd -m -g docker docker \
   && chown -R docker ~docker \
   && apt install -y --no-install-recommends \
   ca-certificates curl docker.io jq \
