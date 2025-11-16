@@ -9,6 +9,7 @@ ENV EPHEMERAL=${EPHEMERAL}
 RUN apt update -y \
   && apt upgrade -y \
   && useradd -m docker \
+  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
   && chown -R docker ~docker \
   && apt install -y --no-install-recommends \
   build-essential ca-certificates curl iptables jq \
