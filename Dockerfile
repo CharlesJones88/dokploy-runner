@@ -8,13 +8,12 @@ ENV EPHEMERAL=${EPHEMERAL}
 
 RUN apt update -y \
   && apt upgrade -y \
-  && useradd -m docker \
+  && groupadd -g 988 docker \
+  && useradd -m -G docker docker \
   && chown -R docker ~docker \
   && apt install -y --no-install-recommends \
-  build-essential ca-certificates curl iptables jq \
-  libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
-  python3 python3-dev python3-pip python3-venv sudo uidmap wget \
-  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+  ca-certificates curl docker.io jq \
+  python3 python3-dev python3-pip python3-venv \
   && rm -rf /var/lib/apt/lists/*
 
 USER docker
