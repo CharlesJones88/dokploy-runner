@@ -9,12 +9,12 @@ ENV EPHEMERAL=${EPHEMERAL}
 RUN apt update -y \
   && apt upgrade -y \
   && useradd -m docker \
-  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
   && chown -R docker ~docker \
   && apt install -y --no-install-recommends \
   build-essential ca-certificates curl iptables jq \
   libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
   python3 python3-dev python3-pip python3-venv sudo uidmap wget \
+  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
   && rm -rf /var/lib/apt/lists/*
 
 USER docker
