@@ -23,8 +23,11 @@ jobs:
 
       - name: no-op sudo
         run: |
-          echo -e '#!/bin/sh\n"$@"' > /usr/local/bin/sudo
-          chmod +x /usr/local/bin/sudo
+          mkdir -p /home/docker/bin
+          printf '#!/bin/sh\nexec "$@"\n' > /home/docker/bin/sudo
+          chmod +x /home/docker/bin/sudo
+          echo 'export PATH="/home/docker/bin:$PATH"' >> /home/docker/.bashrc
+          source /home/docker/.bashrc
 
       - name: Set up Docker
         uses: docker/setup-docker-action@v4
