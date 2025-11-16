@@ -26,8 +26,7 @@ jobs:
           mkdir -p /home/docker/bin
           printf '#!/bin/sh\nexec "$@"\n' > /home/docker/bin/sudo
           chmod +x /home/docker/bin/sudo
-          echo 'export PATH="/home/docker/bin:$PATH"' >> /home/docker/.bashrc
-          source /home/docker/.bashrc
+          echo "$HOME/bin" >> $GITHUB_PATH
 
       - name: Set up Docker
         uses: docker/setup-docker-action@v4
