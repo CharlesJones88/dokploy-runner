@@ -21,6 +21,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: no-op sudo
+        run: |
+          echo -e '#!/bin/sh\n"$@"' > /usr/local/bin/sudo
+          chmod +x /usr/local/bin/sudo
+
       - name: Set up Docker
         uses: docker/setup-docker-action@v4
         with:
