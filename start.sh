@@ -2,6 +2,7 @@
 
 REPO=$REPO
 ACCESS_TOKEN=$TOKEN
+RUNNER_TYPE=${RUNNER_TYPE:-repos}
 ADDITIONAL_ARGS=""
 ADDITIONAL_LABELS=""
 ARCH=""
@@ -24,7 +25,7 @@ case "$(uname -m)" in
     ;;
 esac
 
-REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/repos/${REPO}/actions/runners/registration-token | jq .token --raw-output)
+REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/${RUNNER_TYPE}/${REPO}/actions/runners/registration-token | jq .token --raw-output)
 
 cd /home/docker/actions-runner
 
