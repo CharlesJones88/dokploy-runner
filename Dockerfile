@@ -14,7 +14,7 @@ RUN apt-get update \
   && apt-get update \
   && apt-get install -y --no-install-recommends build-essential curl docker-ce-cli jq \
     libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
-    python3 python3-dev python3-pip python3-venv unzip \
+    python3 python3-dev python3-pip python3-venv ssh unzip \
   && apt-get remove -y ca-certificates gnupg lsb-release \
   && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/* \
