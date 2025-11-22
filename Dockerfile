@@ -24,7 +24,8 @@ RUN apt-get update \
 
 WORKDIR /home/docker
 USER docker
-ENV PATH="/home/docker/.fnm:$PATH"
+ENV FNM_DIR="/home/docker/.local/share/fnm"
+ENV PATH="/home/docker/.local/share/fnm:$PATH"
 
 RUN ARCH="" \
   && case "$(uname -m)" in \
