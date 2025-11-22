@@ -34,8 +34,7 @@ RUN ARCH="" \
   && mkdir actions-runner && cd actions-runner \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
-  && apt-get autoremove -y \
-  && rm -rf /var/lib/apt/lists/* ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
+  && rm -rf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && curl -o- https://fnm.vercel.app/install | bash \
   && fnm install --lts
 
