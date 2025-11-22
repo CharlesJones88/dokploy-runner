@@ -40,3 +40,10 @@ jobs:
           push: true
           platforms: linux/arm64,linux/amd64
           tags: ${{ env.REGISTRY }}/${{ env.REPO }}:latest,${{ env.REGISTRY }}/${{ env.REPO }}:${{ github.sha }}
+
+      - name: Update image
+        env:
+          NODES: ${{ vars.NODES }}
+          IMAGE: ${{ vars.IMAGE }}
+        run: |
+          ./prepull.sh
