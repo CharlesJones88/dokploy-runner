@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export GH_USERNAME GHCR_TOKEN IMAGE
+
 for node in $(echo "$NODES" | jq -r '.[] | @base64'); do
   _jq() {
     echo "${node}" | base64 --decode | jq -r ${1}
