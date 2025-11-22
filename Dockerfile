@@ -36,8 +36,10 @@ RUN ARCH="" \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && rm -rf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
-  && bash -c 'curl -o- https://fnm.vercel.app/install | bash' \
-  && bash -c 'eval "$(fnm env --shell bash)" && fnm install --lts && fnm default lts'
+  && curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
+  && eval "$(fnm env --shell bash)" \
+  && fnm install --lts \
+  && fnm default lts
 
 COPY start.sh start.sh
 
