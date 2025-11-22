@@ -11,8 +11,6 @@ RUN apt-get update \
   && mkdir -p /etc/apt/keyrings \
   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
-  && curl -o- https://fnm.vercel.app/install | bash \
-  && fnm install --lts \
   && apt-get update \
   && apt-get install -y --no-install-recommends build-essential curl docker-ce-cli jq \
     libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
@@ -25,6 +23,7 @@ RUN apt-get update \
   && chown -R docker ~docker
 
 WORKDIR /home/docker
+USER docker
 
 RUN ARCH="" \
   && case "$(uname -m)" in \
@@ -36,9 +35,9 @@ RUN ARCH="" \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && apt-get autoremove -y \
-  && rm -rf /var/lib/apt/lists/* ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
-
-USER docker
+  && rm -rf /var/lib/apt/lists/* ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
+  && curl -o- https://fnm.vercel.app/install | bash \
+  && fnm install --lts
 
 COPY start.sh start.sh
 
