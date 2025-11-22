@@ -48,6 +48,8 @@ jobs:
 
       - name: Update image
         env:
+          GH_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODES: ${{ vars.NODES }}
           IMAGE: ${{ vars.IMAGE }}
         run: |
