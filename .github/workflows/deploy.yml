@@ -41,6 +41,11 @@ jobs:
           platforms: linux/arm64,linux/amd64
           tags: ${{ env.REGISTRY }}/${{ env.REPO }}:latest,${{ env.REGISTRY }}/${{ env.REPO }}:${{ github.sha }}
 
+      - name: Start SSH agent and add deploy key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+
       - name: Update image
         env:
           NODES: ${{ vars.NODES }}
