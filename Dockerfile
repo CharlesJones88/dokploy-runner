@@ -40,7 +40,7 @@ RUN ARCH="" \
   && curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
   && eval "$(fnm env --shell bash)" \
   && fnm install --lts \
-  && fnm default lts
+  && fnm default lts-latest
 
 COPY start.sh start.sh
 
