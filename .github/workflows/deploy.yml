@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: dokploy-x64
     permissions:
       packages: write
       contents: read
