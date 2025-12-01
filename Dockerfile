@@ -18,7 +18,7 @@ RUN apt-get update \
   && apt-get remove -y ca-certificates gnupg lsb-release \
   && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/* \
-  && groupadd -g 988 docker \
+  && groupadd -g 3000 docker \
   && useradd -m -g docker docker \
   && chown -R docker ~docker
 
