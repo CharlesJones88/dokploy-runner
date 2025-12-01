@@ -25,7 +25,8 @@ RUN apt-get update \
 
 RUN groupadd -g ${DOCKER_GROUP} docker \
   && useradd -m -g docker docker \
-  && chown -R docker ~docker
+  && chown -R docker ~docker \
+  && && echo 'eval "$(fnm env --shell posix)"' >> /etc/profile
 
 WORKDIR /home/docker
 USER docker
@@ -44,8 +45,7 @@ RUN ARCH="" \
   && rm -rf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 
 RUN curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
-  && echo 'eval "$(fnm env --shell bash)"' >> /home/docker/.bashrc \
-  && eval "$(fnm env --shell bash)" \
+  && eval "$(fnm env --shell posix)" \
   && fnm install --lts \
   && fnm default lts-latest \
   && fnm use lts-latest
