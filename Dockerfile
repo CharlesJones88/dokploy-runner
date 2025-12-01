@@ -1,5 +1,6 @@
 FROM ubuntu:latest
 
+ARG DOCKER_GROUP=3000
 ARG RUNNER_VERSION="2.329.0"
 ARG EPHEMERAL=false
 
@@ -10,15 +11,19 @@ RUN apt-get update \
   && apt-get install -y ca-certificates curl gnupg lsb-release \
   && mkdir -p /etc/apt/keyrings \
   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl docker-ce-cli jq \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential curl docker-ce-cli jq \
     libffi-dev libicu74 libicu-dev libkrb5-3 libssl-dev libssl3 \
     python3 python3-dev python3-pip python3-venv ssh unzip \
   && apt-get remove -y ca-certificates gnupg lsb-release \
   && apt-get autoremove -y \
-  && rm -rf /var/lib/apt/lists/* \
-  && groupadd -g 3000 docker \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g ${DOCKER_GROUP} docker \
   && useradd -m -g docker docker \
   && chown -R docker ~docker
 
@@ -36,8 +41,10 @@ RUN ARCH="" \
   && mkdir actions-runner && cd actions-runner \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
-  && rm -rf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
-  && curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
+  && rm -rf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
+
+RUN curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
+  && echo 'eval "$(fnm env --shell bash)"' >> /home/docker/.bashrc \
   && eval "$(fnm env --shell bash)" \
   && fnm install --lts \
   && fnm default lts-latest \
