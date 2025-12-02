@@ -48,6 +48,7 @@ RUN curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
   && fnm install --lts \
   && fnm default lts-latest \
   && fnm use lts-latest \
+  && ls "$HOME/.fnm" \
   && NODE_DIR=$(ls -d "$HOME/.fnm/versions/node/"* | head -n1) cp "$NODE_DIR/bin/node" /usr/local/bin/ \
   && NODE_DIR=$(ls -d "$HOME/.fnm/versions/node/"* | head -n1) cp "$NODE_DIR/bin/npm" /usr/local/bin/ \
   && NODE_DIR=$(ls -d "$HOME/.fnm/versions/node/"* | head -n1) cp "$NODE_DIR/bin/npx" /usr/local/bin/
