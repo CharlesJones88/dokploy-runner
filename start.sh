@@ -7,6 +7,19 @@ ADDITIONAL_ARGS=""
 ADDITIONAL_LABELS=""
 ARCH=""
 
+if [ ! -d "$HOME/.fnm" ]; then
+  curl -fsSL https://fnm.vercel.app/install | bash
+fi
+
+NODE_VERSION=$(~/.fnm/fnm list | grep lts | head -n1)
+if [ ! -d "$HOME/.fnm/versions/node/${NODE_VERSION}" ]; then
+  ~/.fnm/fnm install --lts
+  ~/.fnm/fnm use lts-latest
+fi
+
+NODE_DIR=$(ls -d ~/.fnm/versions/node/* | head -n1)
+export PATH="$NODE_DIR/bin:$PATH"
+
 if [[ "$EPHEMERAL" = "true" ]]; then
   ADDITIONAL_ARGS=$(echo "${ADDITIONAL_ARGS} --ephemeral" | xargs)
   ADDITIONAL_LABELS="$ADDITIONAL_LABELS,ephemeral"
