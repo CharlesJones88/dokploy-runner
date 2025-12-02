@@ -54,7 +54,8 @@ USER root
 RUN  NODE_DIR=$(ls -d "/home/docker/.local/share/fnm/node-versions/"* | head -n1) \
   && cp "$NODE_DIR/installation/bin/node" /usr/local/bin/ \
   && cp "$NODE_DIR/installation/bin/npm" /usr/local/bin/ \
-  && cp "$NODE_DIR/installation/bin/npx" /usr/local/bin/
+  && cp "$NODE_DIR/installation/bin/npx" /usr/local/bin/ \
+  && ln -s "$NODE_DIR/installation/lib/node_modules" /usr/local/lib/node_modules
 
 USER docker
 
