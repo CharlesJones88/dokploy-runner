@@ -26,7 +26,7 @@ RUN apt-get update \
 RUN groupadd -g ${DOCKER_GROUP} docker \
   && useradd -m -g docker docker \
   && chown -R docker ~docker \
-  && && echo 'eval "$(fnm env --shell posix)"' >> /etc/profile
+  && echo 'eval "$(fnm env --shell posix)"' >> /etc/profile
 
 WORKDIR /home/docker
 USER docker
