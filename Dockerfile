@@ -47,11 +47,16 @@ RUN curl -o- https://fnm.vercel.app/install | bash -s -- --skip-shell \
   && eval "$(fnm env --shell bash)" \
   && fnm install --lts \
   && fnm default lts-latest \
-  && fnm use lts-latest \
-  && NODE_DIR=$(ls -d "$HOME/.local/share/fnm/node-versions/"* | head -n1) \
+  && fnm use lts-latest
+
+USER root
+
+RUN  NODE_DIR=$(ls -d "/home/docker/.local/share/fnm/node-versions/"* | head -n1) \
   && cp "$NODE_DIR/installation/bin/node" /usr/local/bin/ \
   && cp "$NODE_DIR/installation/bin/npm" /usr/local/bin/ \
   && cp "$NODE_DIR/installation/bin/npx" /usr/local/bin/
+
+USER docker
 
 COPY start.sh start.sh
 
