@@ -31,8 +31,7 @@ cd /home/docker/actions-runner
 
 ./config.sh --url https://github.com/${REPO} \
   --token ${REG_TOKEN} ${ADDITIONAL_ARGS} \
-  --labels dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS} \
-  --enable-oidc
+  --labels dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}
 
 cleanup() {
   echo "Removing runner ..."
