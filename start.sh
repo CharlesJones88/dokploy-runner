@@ -12,7 +12,7 @@ if [[ "$EPHEMERAL" = "true" ]]; then
   ADDITIONAL_LABELS="$ADDITIONAL_LABELS,ephemeral"
 fi
 
-[[ -n "$ADDITION_LABELS" && "$ADDITIONAL_LABELS" != ,* ]] && ADDITION_LABELS=",${ADDITION_LABELS}"
+[[ -n "$ADDITIONAL_LABELS" && "$ADDITIONAL_LABELS" != ,* ]] && ADDITIONAL_LABELS=",${ADDITIONAL_LABELS}"
 
 case "$(uname -m)" in
   "x86_64")
