@@ -34,6 +34,7 @@ jobs:
           fi
 
           curl -L -o ds.tar.gz $URL
+          tar -xvf ds.tar.gz
           mv dist_linux/mint ${{ runner.temp }}
           mv dist_linux/mint-sensor ${{ runner.temp }}
           echo "SLIM_PATH=/tmp" >> $GITHUB_ENV
