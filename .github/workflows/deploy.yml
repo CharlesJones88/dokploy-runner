@@ -60,7 +60,7 @@ jobs:
           target: "${{ env.REGISTRY }}:${{ github.sha }}"
           overwrite: true
           tag: "${{ github.sha }}"
-          version: "1.44"
+          version: "1.41.8"
 
       - name: Push Image
         run: docker image push "${{ env.REGISTRY }}" --all-tags
