@@ -83,6 +83,7 @@ jobs:
             --include-shell \
             --include-bin /bin/bash \
             --include-bin /bin/sh \
+            --include-bin /bin/uname \
             --include-path /lib/x86_64-linux-gnu \
             --include-path /usr/lib/x86_64-linux-gnu \
             --tag=${{ env.REGISTRY }}:latest \
