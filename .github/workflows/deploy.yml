@@ -79,7 +79,12 @@ jobs:
         run: |
           $SLIM_PATH/mint build \
             --http-probe=false \
-            --continue-after=1s \
+            --continue-after=5s \
+            --include-shell \
+            --include-bin /bin/bash \
+            --include-bin /bin/sh \
+            --include-path /lib/x86_64-linux-gnu \
+            --include-path /usr/lib/x86_64-linux-gnu \
             --tag=${{ env.REGISTRY }}:latest \
             ${{ env.REGISTRY }}:latest
 
