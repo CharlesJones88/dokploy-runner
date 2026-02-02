@@ -84,11 +84,8 @@ jobs:
             --include-bin /bin/bash \
             --include-bin /bin/sh \
             --include-bin /bin/uname \
-            --include-bin /usr/bin/xargs \
             --include-bin /usr/bin/curl \
             --include-bin /usr/bin/jq \
-            --include-path /lib/x86_64-linux-gnu \
-            --include-path /usr/lib/x86_64-linux-gnu \
             --include-path /home/docker \
             --tag=${{ env.REGISTRY }}:latest \
             ${{ env.REGISTRY }}:latest
