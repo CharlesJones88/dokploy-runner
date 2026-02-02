@@ -82,14 +82,6 @@ jobs:
             --tag=${{ env.REGISTRY }}:latest \
             ${{ env.REGISTRY }}:latest
 
-      - name: Slim sha Image
-        run: |
-          $SLIM_PATH/mint build \
-            --http-probe=false \
-            --continue-after=1s \
-            --tag=${{ env.REGISTRY }}:${{ github.sha }} \
-            ${{ env.REGISTRY }}:${{ github.sha }}
-
       - name: Push Image
         run: docker image push "${{ env.REGISTRY }}" --all-tags
 
