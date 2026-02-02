@@ -38,14 +38,14 @@ jobs:
         with:
           push: false
           platforms: linux/arm64,linux/amd64
-          tags: ${{ env.REGISTRY }}:latest,${{ env.REGISTRY }}:${{ github.sha }}
+          tags: ${REGISTRY@L}:latest,${REGISTRY@L}:${{ github.sha }}
 
       - name: Slim latest Image
         uses: kitabisa/docker-slim-action@v1
         env:
           DSLIM_HTTP_PROVE: false
         with:
-          target: ${{ env.REGISTRY }}:latest
+          target: ${REGISTRY@L}:latest
           overwrite: true
           tag: "latest"
 
@@ -54,12 +54,12 @@ jobs:
         env:
           DSLIM_HTTP_PROVE: false
         with:
-          target: "${{ env.REGISTRY }}:${{ github.sha }}"
+          target: "${REGISTRY@L}:${{ github.sha }}"
           overwrite: true
           tag: "${{ github.sha }}"
 
       - name: Push Image
-        run: docker image push "${{ env.REGISTRY }}" --all-tags
+        run: docker image push "${REGISTRY@L}" --all-tags
 
       - name: Start SSH agent and add deploy key
         uses: webfactory/ssh-agent@v0.9.1
