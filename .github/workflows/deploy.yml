@@ -38,12 +38,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Cache Docker layers
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build
         uses: docker/build-push-action@v6
         with:
           push: false
           platforms: linux/arm64,linux/amd64
           tags: ${{ env.REGISTRY }}:latest,${{ env.REGISTRY }}:${{ github.sha }}
+          cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
+          cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf ${{ runner.temp }}/.buildx-cache
+          mv ${{ runner.temp }}/.buildx-cache-new ${{ runner.temp }}/.buildx-cache
 
       - name: Slim latest Image
         uses: kitabisa/docker-slim-action@v1
