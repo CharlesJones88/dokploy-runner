@@ -6,8 +6,7 @@ on:
       - main
 
 env:
-  REGISTRY: ghcr.io
-  REPO: charlesjones88/dokploy-runner
+  REGISTRY: ghcr.io/${{ github.repository }}
 
 jobs:
   deploy:
@@ -37,9 +36,30 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          push: true
+          push: false
           platforms: linux/arm64,linux/amd64
-          tags: ${{ env.REGISTRY }}/${{ env.REPO }}:latest,${{ env.REGISTRY }}/${{ env.REPO }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}:latest,${{ env.REGISTRY }}:${{ github.sha }}
+
+      - name: Slim latest Image
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_HTTP_PROVE: false
+        with:
+          target: ${{ env.REGISTRY }}:latest
+          overwrite: true
+          tag: "latest"
+
+      - name: Slim sha Image
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_HTTP_PROVE: false
+        with:
+          target: "${{ env.REGISTRY }}:${{ github.sha }}"
+          overwrite: true
+          tag: "${{ github.sha }}"
+
+      - name: Push Image
+        run: docker image push "${{ env.REGISTRY }}" --all-tags
 
       - name: Start SSH agent and add deploy key
         uses: webfactory/ssh-agent@v0.9.1
