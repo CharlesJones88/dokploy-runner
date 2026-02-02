@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  DOCKER_API_VERSION: '1.44'
+
 jobs:
   deploy:
     runs-on: dokploy-x64
@@ -50,7 +53,6 @@ jobs:
           target: ${{ env.REGISTRY }}:latest
           overwrite: true
           tag: "latest"
-          version: "1.44"
 
       - name: Slim sha Image
         uses: kitabisa/docker-slim-action@v1
@@ -60,7 +62,6 @@ jobs:
           target: "${{ env.REGISTRY }}:${{ github.sha }}"
           overwrite: true
           tag: "${{ github.sha }}"
-          version: "1.41.8"
 
       - name: Push Image
         run: docker image push "${{ env.REGISTRY }}" --all-tags
