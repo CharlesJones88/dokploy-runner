@@ -63,9 +63,10 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
+          load: true
           push: false
           platforms: linux/arm64,linux/amd64
-          tags: ${{ env.REGISTRY }}:latest,${{ env.REGISTRY }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}:latest
           cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
           cache-to: type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
 
@@ -83,7 +84,9 @@ jobs:
             ${{ env.REGISTRY }}:latest
 
       - name: Push Image
-        run: docker image push "${{ env.REGISTRY }}" --all-tags
+        run: |
+          docker tag ${{ env.REGISTRY }}:latest ${{ env.REGISTRY }}:${{ github.sha }}
+          docker image push "${{ env.REGISTRY }}" --all-tags
 
       - name: Start SSH agent and add deploy key
         uses: webfactory/ssh-agent@v0.9.1
