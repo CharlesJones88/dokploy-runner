@@ -83,8 +83,11 @@ jobs:
             --include-shell \
             --include-bin /bin/bash \
             --include-bin /bin/sh \
+            --include-bin /bin/cp \
             --include-bin /bin/uname \
             --include-bin /usr/bin/curl \
+            --include-bin /usr/bin/dirname \
+            --include-bin /usr/bin/id \
             --include-bin /usr/bin/jq \
             --include-path /home/docker \
             --tag=${{ env.REGISTRY }}:latest \
