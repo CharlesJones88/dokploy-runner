@@ -63,8 +63,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          load: true
-          push: false
+          push: true
           platforms: linux/arm64,linux/amd64
           tags: ${{ env.REGISTRY }}:latest
           cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
@@ -74,29 +73,6 @@ jobs:
         run: |
           rm -rf ${{ runner.temp }}/.buildx-cache
           mv ${{ runner.temp }}/.buildx-cache-new ${{ runner.temp }}/.buildx-cache
-
-      - name: Slim latest Image
-        run: |
-          $SLIM_PATH/mint build \
-            --http-probe=false \
-            --continue-after=5s \
-            --include-shell \
-            --include-bin /bin/bash \
-            --include-bin /bin/sh \
-            --include-bin /bin/cp \
-            --include-bin /bin/uname \
-            --include-bin /usr/bin/curl \
-            --include-bin /usr/bin/dirname \
-            --include-bin /usr/bin/id \
-            --include-bin /usr/bin/jq \
-            --include-path /home/docker \
-            --tag=${{ env.REGISTRY }}:latest \
-            ${{ env.REGISTRY }}:latest
-
-      - name: Push Image
-        run: |
-          docker tag ${{ env.REGISTRY }}:latest ${{ env.REGISTRY }}:${{ github.sha }}
-          docker image push "${{ env.REGISTRY }}" --all-tags
 
       - name: Start SSH agent and add deploy key
         uses: webfactory/ssh-agent@v0.9.1
