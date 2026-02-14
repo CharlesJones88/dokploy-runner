@@ -12,19 +12,19 @@ if [[ "$EPHEMERAL" = "true" ]]; then
   ADDITIONAL_ARGS="${ADDITIONAL_ARGS##*( )}"
   ADDITIONAL_ARGS="${ADDITIONAL_ARGS%%*( )}"
   if [[ -n "$ADDITIONAL_LABELS" ]]; then
-    ADDITIONAL_LABELS="ephemeral"
-   else
     ADDITIONAL_LABELS="$ADDITIONAL_LABELS,ephemeral"
+   else
+    ADDITIONAL_LABELS="ephemeral"
    fi
 fi
 
 [[ -n "$ADDITIONAL_LABELS" && "$ADDITIONAL_LABELS" != ,* ]] && ADDITIONAL_LABELS=",${ADDITIONAL_LABELS}"
 
 case "$(uname -m)" in
-  "x86_64")
+  x86_64)
     ARCH="x64"
     ;;
-  "aarch64")
+  aarch64|arm64)
     ARCH="arm64"
     ;;
   *)
