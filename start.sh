@@ -1,56 +1,30 @@
 #!/bin/bash
 
-REPO=$REPO
-ACCESS_TOKEN=$TOKEN
+REPO=${REPO}
+ACCESS_TOKEN=${TOKEN}
 RUNNER_TYPE=${RUNNER_TYPE:-repos}
-ADDITIONAL_ARGS=""
 ADDITIONAL_LABELS=${ADDITIONAL_LABELS}
 ARCH=""
 
-if [[ "$EPHEMERAL" = "true" ]]; then
-  ADDITIONAL_ARGS="${ADDITIONAL_ARGS} --ephemeral"
-  ADDITIONAL_ARGS="${ADDITIONAL_ARGS##*( )}"
-  ADDITIONAL_ARGS="${ADDITIONAL_ARGS%%*( )}"
-  if [[ -n "$ADDITIONAL_LABELS" ]]; then
-    ADDITIONAL_LABELS="$ADDITIONAL_LABELS,ephemeral"
-   else
-    ADDITIONAL_LABELS="ephemeral"
-   fi
-fi
-
-[[ -n "$ADDITIONAL_LABELS" && "$ADDITIONAL_LABELS" != ,* ]] && ADDITIONAL_LABELS=",${ADDITIONAL_LABELS}"
-
 case "$(uname -m)" in
-  x86_64)
-    ARCH="x64"
-    ;;
-  aarch64|arm64)
-    ARCH="arm64"
-    ;;
+  x86_64) ARCH="x64" ;;
+  aarch64|arm64) ARCH="arm64" ;;
   *)
     echo "Unsupported OS Architecture"
     exit 1
     ;;
 esac
 
-REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" \
-  -H "Accept: application/vnd.github+json" \
-  https://api.github.com/${RUNNER_TYPE}/${REPO}/actions/runners/registration-token \
-  | jq .token --raw-output)
+[[ -n "$ADDITIONAL_LABELS" && "$ADDITIONAL_LABELS" != ,* ]] && ADDITIONAL_LABELS=",${ADDITIONAL_LABELS}"
+LABELS="dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}"
 
 cd /home/docker/actions-runner
 
-./config.sh --url https://github.com/${REPO} \
-  --token ${REG_TOKEN} ${ADDITIONAL_ARGS} \
-  --disableupdate \
-  --labels dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}
+JIT_CONFIG=$(curl -X POST \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "Accept: application/vnd.github+json" \
+  -d "{\"name\":\"${NAME}\",\"runner_group_id\":1,\"labels\":$(echo ${LABELS} | jq -R -c 'split(",")')}" \
+  "https://api.github.com/${RUNNER_TYPE}/${REPO}/actions/runners/generate-jitconfig" \
+  | jq .encoded_jit_config --raw-output)
 
-cleanup() {
-  echo "Removing runner ..."
-  ./config.sh remove --token ${REG_TOKEN}
-}
-
-trap 'cleanup; exit 130' INT
-trap 'cleanup; exit 143' TERM
-
-exec ./run.sh
+exec ./run.sh --jitconfig "${JIT_CONFIG}"
