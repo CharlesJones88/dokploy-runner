@@ -33,12 +33,16 @@ case "$(uname -m)" in
     ;;
 esac
 
-REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/${RUNNER_TYPE}/${REPO}/actions/runners/registration-token | jq .token --raw-output)
+REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/${RUNNER_TYPE}/${REPO}/actions/runners/registration-token \
+  | jq .token --raw-output)
 
 cd /home/docker/actions-runner
 
 ./config.sh --url https://github.com/${REPO} \
   --token ${REG_TOKEN} ${ADDITIONAL_ARGS} \
+  --disableupdate \
   --labels dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}
 
 cleanup() {
