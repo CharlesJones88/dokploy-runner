@@ -58,6 +58,6 @@ RUN  NODE_DIR=$(ls -d "/home/docker/.local/share/fnm/node-versions/"* | head -n1
 
 USER docker
 
-COPY start.sh start.sh
+COPY start.sh monitor.sh ./
 
 ENTRYPOINT [ "./start.sh" ]
