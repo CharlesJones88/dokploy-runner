@@ -26,7 +26,7 @@ while (( check < max_checks )); do
     break
   fi
 
-  ((++check))
+  (( ++check ))
 done
 
 if [[ $kill_job ]]; then
