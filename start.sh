@@ -1,10 +1,10 @@
 #!/bin/bash
 
-REPO=${REPO}
 ACCESS_TOKEN=${TOKEN}
-RUNNER_TYPE=${RUNNER_TYPE:-repos}
 ADDITIONAL_LABELS=${ADDITIONAL_LABELS}
 ARCH=""
+REPO=${REPO}
+RUNNER_TYPE=${RUNNER_TYPE:-repos}
 
 case "$(uname -m)" in
   x86_64) ARCH="x64" ;;
@@ -19,6 +19,8 @@ esac
 LABELS="dokploy,${ARCH},dokploy-${ARCH}${ADDITIONAL_LABELS}"
 
 cd /home/docker/actions-runner
+
+PARENT_PID=$$ ./monitor.sh &
 
 JIT_CONFIG=$(curl -X POST \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
